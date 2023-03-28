@@ -2,6 +2,7 @@ package application
 
 import (
 	"errors"
+	"qr-code-generator-api/environment"
 	"time"
 
 	"github.com/goccy/go-json"
@@ -38,8 +39,8 @@ func (server *server) Setup() {
 		AllowMethods: "GET,POST,HEAD,PUT,DELETE,PATCH,OPTIONS",
 	}))
 
-	server.App.Get("/info", func(context *fiber.Ctx) error {
-		return context.Status(fiber.StatusOK).SendString("QR Code Generator API v1.0.0")
+	server.App.Get("/about", func(context *fiber.Ctx) error {
+		return context.Status(fiber.StatusOK).SendString("QR Code Generator API v1.1.0")
 	})
 
 	server.App.Get("/metrics", monitor.New(monitor.Config{
@@ -49,7 +50,7 @@ func (server *server) Setup() {
 }
 
 func (server *server) Start() error {
-	serverPort := ":" + Environment.Variables.ServerPort
+	serverPort := ":" + environment.Variables.ServerPort
 
 	err := server.App.Listen(serverPort)
 

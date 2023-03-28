@@ -3,10 +3,11 @@ package main
 import (
 	"log"
 	"qr-code-generator-api/application"
+	"qr-code-generator-api/environment"
 )
 
 func main() {
-	application.Environment.Load()
+	environment.Load()
 
 	application.Server.Setup()
 	application.Server.LoadRoutes()

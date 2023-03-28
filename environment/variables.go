@@ -1,4 +1,4 @@
-package application
+package environment
 
 import (
 	"log"
@@ -11,13 +11,9 @@ type envVars struct {
 	ServerPort string
 }
 
-type environment struct {
-	Variables envVars
-}
+var Variables envVars
 
-var Environment environment
-
-func (environment *environment) Load() {
+func Load() {
 	err := godotenv.Load()
 
 	if err == nil {
@@ -26,5 +22,5 @@ func (environment *environment) Load() {
 		)
 	}
 
-	environment.Variables.ServerPort = os.Getenv("SERVER_PORT")
+	Variables.ServerPort = os.Getenv("SERVER_PORT")
 }
