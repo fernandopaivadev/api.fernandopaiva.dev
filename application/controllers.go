@@ -12,7 +12,7 @@ var Controllers controllers
 
 func (*controllers) Welcome(context *fiber.Ctx) error {
 	return context.Status(fiber.StatusOK).SendString(
-		"Usage: \n  [...]/qrcode/:text (default 512px)\n  [...]/qrcode/:text/:size",
+		"QR Code Generator API v1.1.0\n\nUsage: \n  [...]/qrcode/:text (default 512px)\n  [...]/qrcode/:text/:size",
 	)
 }
 
