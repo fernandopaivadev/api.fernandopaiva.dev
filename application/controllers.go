@@ -1,4 +1,4 @@
-package main
+package application
 
 import (
 	"strconv"
@@ -11,7 +11,7 @@ type controllers struct{}
 var Controllers controllers
 
 func (*controllers) Welcome(context *fiber.Ctx) error {
-	return context.Status(fiber.StatusBadRequest).SendString(
+	return context.Status(fiber.StatusOK).SendString(
 		"Usage: \n  [...]/qrcode/:text (default 512px)\n  [...]/qrcode/:text/:size",
 	)
 }
@@ -44,7 +44,7 @@ func (controllers *controllers) EncodeTextWithSize(context *fiber.Ctx) error {
 	qrcodePng, err := encodeQrCode(textToBeEncoded, qrcodeImageSize)
 
 	if err != nil {
-		return context.Status(fiber.StatusBadRequest).SendString(
+		return context.Status(fiber.StatusInternalServerError).SendString(
 			"Error generating qr code image => " + err.Error(),
 		)
 	}

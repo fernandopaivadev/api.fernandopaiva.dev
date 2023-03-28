@@ -1,14 +1,17 @@
 package main
 
-import "log"
+import (
+	"log"
+	"qr-code-generator-api/application"
+)
 
 func main() {
-	Environment.Load()
+	application.Environment.Load()
 
-	Server.Setup()
-	Server.LoadRoutes()
+	application.Server.Setup()
+	application.Server.LoadRoutes()
 
-	err := Server.Start()
+	err := application.Server.Start()
 
 	if err != nil {
 		log.Fatalln(err.Error())
