@@ -9,7 +9,7 @@ import (
 func (server *server) LoadRoutes() {
 	routesGroup := server.App.Group("/qrcode")
 
-	server.App.Get("/metrics", monitor.New(monitor.Config{
+	routesGroup.Get("/metrics", monitor.New(monitor.Config{
 		Title:   "QR Code Generator API Metrics",
 		Refresh: time.Second * 5,
 	}))
