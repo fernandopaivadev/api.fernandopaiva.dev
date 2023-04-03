@@ -3,52 +3,47 @@ package application
 import (
 	"strconv"
 
-	"github.com/gofiber/fiber/v2"
+	"github.com/labstack/echo/v4"
 )
 
 type controllers struct{}
 
 var Controllers controllers
 
-func (*controllers) Welcome(context *fiber.Ctx) error {
-	return context.Status(fiber.StatusOK).SendString(
-		"QR Code Generator API v1.1.0\n\nUsage: \n  [...]/qrcode/:text (default 512px)\n  [...]/qrcode/:text/:size",
+func (*controllers) Welcome(context echo.Context) error {
+	return context.String(
+		200,
+		"QR Code Generator API v1.2.0\n\nUsage: \n  [...]/qrcode/:text (default 512px)\n  [...]/qrcode/:text/:size",
 	)
 }
 
-func (*controllers) EncodeText(context *fiber.Ctx) error {
-	textToBeEncoded := context.Params("text")
+func (*controllers) EncodeText(context echo.Context) error {
+	textToBeEncoded := context.Param("text")
 
-	qrcodePng, err := encodeQrCode(textToBeEncoded, 512)
+	qrcodePng, err := textToPng(textToBeEncoded, 512)
 
 	if err != nil {
-		return context.Status(fiber.StatusInternalServerError).SendString(
-			"Error parsing text to encode => " + err.Error(),
+		return context.String(
+			500,
+			"Error encoding text => "+err.Error(),
 		)
 	}
 
-	context.Response().Header.Set("Content-Type", "image/png")
-	return context.Status(fiber.StatusOK).Send(qrcodePng)
+	return context.Blob(200, "image/png", qrcodePng)
 }
 
-func (controllers *controllers) EncodeTextWithSize(context *fiber.Ctx) error {
-	textToBeEncoded := context.Params("text")
-	qrcodeImageSize, err := strconv.ParseUint(context.Params("size"), 10, 16)
+func (controllers *controllers) EncodeTextWithSize(context echo.Context) error {
+	textToBeEncoded := context.Param("text")
+	qrcodeImageSize, _ := strconv.ParseUint(context.Param("size"), 10, 16)
+
+	qrcodePng, err := textToPng(textToBeEncoded, qrcodeImageSize)
 
 	if err != nil {
-		return context.Status(fiber.StatusInternalServerError).SendString(
-			"Error parsing image size => " + err.Error(),
+		return context.String(
+			500,
+			"Error encoding text => "+err.Error(),
 		)
 	}
 
-	qrcodePng, err := encodeQrCode(textToBeEncoded, qrcodeImageSize)
-
-	if err != nil {
-		return context.Status(fiber.StatusInternalServerError).SendString(
-			"Error generating qr code image => " + err.Error(),
-		)
-	}
-
-	context.Response().Header.Set("Content-Type", "image/png")
-	return context.Status(fiber.StatusOK).Send(qrcodePng)
+	return context.Blob(200, "image/png", qrcodePng)
 }
