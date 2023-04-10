@@ -13,7 +13,7 @@ var Controllers controllers
 func (*controllers) Welcome(context echo.Context) error {
 	return context.String(
 		200,
-		"QR Code Generator API v1.2.0\n\nUsage: \n  [...]/qrcode/:text (default 512px)\n  [...]/qrcode/:text/:size",
+		"QR Code Generator API v1.2.2\n\nUsage: \n  [...]/qrcode/:text (default 512px)\n  [...]/qrcode/:text/:size",
 	)
 }
 
