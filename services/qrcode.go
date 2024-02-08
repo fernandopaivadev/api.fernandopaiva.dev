@@ -1,4 +1,4 @@
-package application
+package services
 
 import (
 	"errors"
@@ -6,7 +6,11 @@ import (
 	"github.com/skip2/go-qrcode"
 )
 
-func textToPng(text string, size uint64) ([]byte, error) {
+type qrCodeService struct{}
+
+var QRCode qrCodeService
+
+func (*qrCodeService) TextToPng(text string, size uint64) ([]byte, error) {
 	if size > 5000 {
 		return nil, errors.New("image size must be less or equal to 5000")
 	}

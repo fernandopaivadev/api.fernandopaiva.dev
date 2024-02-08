@@ -1,0 +1,10 @@
+version: "3"
+services:
+    api.fernandopaiva.dev:
+        build: .
+        container_name: api.fernandopaiva.dev
+        network_mode: host
+        restart: unless-stopped
+        env_file: .env
+        volumes:
+            - ./data:/app/data

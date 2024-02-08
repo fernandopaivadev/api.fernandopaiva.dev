@@ -2,18 +2,20 @@ package main
 
 import (
 	"log"
-	"qr-code-generator-api/application"
-	"qr-code-generator-api/environment"
+	"main/config"
+	"main/server"
 )
 
 func main() {
-	environment.Load()
+	err := config.Env.Load()
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
 
-	application.Server.Setup()
-	application.Server.LoadRoutes()
+	server.HTTPServer.Setup()
+	server.HTTPServer.LoadQRCodeRoutes()
 
-	err := application.Server.Start()
-
+	err = server.HTTPServer.Start(config.Env.ServerPort)
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
