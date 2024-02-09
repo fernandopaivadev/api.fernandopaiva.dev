@@ -2,7 +2,7 @@ FROM ubuntu:latest
 
 ENV APP_NAME=api.fernandopaiva.dev
 ENV CGO_ENABLED=1
-ENV GO_VERSION=1.21.6
+ENV GO_VERSION=1.22.0
 
 RUN apt update -y && \
 	apt install -y tar && \

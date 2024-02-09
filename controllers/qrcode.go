@@ -11,7 +11,7 @@ type qrCodeController struct{}
 
 var QRCode qrCodeController
 
-func (*qrCodeController) EncodeTextWithSize(c echo.Context) error {
+func (*qrCodeController) EncodeText(c echo.Context) error {
 	textToBeEncoded := c.Param("text")
 	qrcodeImageSize, _ := strconv.ParseUint(c.Param("size"), 10, 16)
 
@@ -24,7 +24,7 @@ func (*qrCodeController) EncodeTextWithSize(c echo.Context) error {
 	if err != nil {
 		return c.String(
 			500,
-			"Error encoding text => "+err.Error(),
+			"Error encoding text: "+err.Error(),
 		)
 	}
 

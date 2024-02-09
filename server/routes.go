@@ -5,10 +5,10 @@ import "main/controllers"
 func (server *httpServer) LoadQRCodeRoutes() {
 	server.instance.GET(
 		"/qrcode/:text",
-		controllers.QRCode.EncodeTextWithSize,
+		controllers.QRCode.EncodeText,
 	)
 	server.instance.GET(
 		"/qrcode/:text/:size",
-		controllers.QRCode.EncodeTextWithSize,
+		controllers.QRCode.EncodeText,
 	)
 }
