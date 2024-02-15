@@ -1,23 +1,21 @@
-FROM ubuntu:latest
+FROM golang:1.22.0-bullseye as compile
 
 ENV APP_NAME=api.fernandopaiva.dev
 ENV CGO_ENABLED=1
-ENV GO_VERSION=1.22.0
-
-RUN apt update -y && \
-	apt install -y tar && \
-	apt install -y wget && \
-	apt install -y gcc && \
-	wget https://go.dev/dl/go$GO_VERSION.linux-amd64.tar.gz && \
-	tar -C /usr/local -xzf go$GO_VERSION.linux-amd64.tar.gz && \
-	export PATH=$PATH:/usr/local/go/bin
 
 WORKDIR /usr/app
 COPY . .
 
-RUN export PATH=$PATH:/usr/local/go/bin && \
+RUN apt install gcc && \
 	go mod tidy && \
 	go build -o $APP_NAME
+
+FROM ubuntu:latest
+
+ENV APP_NAME=api.fernandopaiva.dev
+
+COPY --from=compile /usr/app /usr/app
+WORKDIR /usr/app
 
 EXPOSE 3000
 
