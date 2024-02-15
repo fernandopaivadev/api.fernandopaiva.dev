@@ -1,18 +1,21 @@
-FROM golang:1.22.0-bullseye as compile
+ARG APP_NAME=api.fernandopaiva.dev
 
-ENV APP_NAME=api.fernandopaiva.dev
+FROM golang:latest as compile
+
+ARG APP_NAME
+ENV APP_NAME=$APP_NAME
 ENV CGO_ENABLED=1
 
 WORKDIR /usr/app
 COPY . .
 
-RUN apt install gcc && \
-	go mod tidy && \
+RUN	go mod download && \
 	go build -o $APP_NAME
 
-FROM ubuntu:latest
+FROM busybox:latest
 
-ENV APP_NAME=api.fernandopaiva.dev
+ARG APP_NAME
+ENV APP_NAME=$APP_NAME
 
 COPY --from=compile /usr/app /usr/app
 WORKDIR /usr/app
